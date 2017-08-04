@@ -62,7 +62,7 @@ class CurrencyConverterApp extends React.Component {
   };
    
    showDisclaimerMessage(event){
-	   var disclimermsgstatus = document.getElementById('disclaimer-msg-container');
+	   var disclimermsgstatus = event.target.parentNode.nextSibling;
 	   if(disclimermsgstatus.style.display === 'none'){
 					  this.setState({ showhidedisclaimermsg: 'block'},function () {
 						   console.log("disclaimer msg shown")
