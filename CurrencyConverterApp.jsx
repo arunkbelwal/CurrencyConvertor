@@ -81,7 +81,7 @@ class CurrencyConverterApp extends React.Component {
 	});
      // document.getElementById('selectedCurrencyFormatFrom').value = currentselec;
 	  this.setState({ currencyformatfrom: event.target.innerText},function () {
-       this.updateState();
+       this.updateState(event);
 	   
     });
 	  
@@ -93,15 +93,15 @@ class CurrencyConverterApp extends React.Component {
 	});
      // document.getElementById('selectedCurrencyFormatTo').value = currentselec;
 	  this.setState({ currencyformatto: event.target.innerText},function () {
-       this.updateState();
+       this.updateState(event);
     });
 	  
 	  
   };
    
   
-   updateState() {
-	   var inputamount = document.getElementById('inputamount').value;
+   updateState(event) {
+	   var inputamount = event.target.value;
 	   //var  selectedcurrencyfrom = document.getElementById('selectedCurrencyFormatFrom').value;
 	  // var  selectedcurrencyto = document.getElementById('selectedCurrencyFormatTo').value;
 	  var  selectedcurrencyfrom = this.state.currencyformatfrom;
@@ -155,7 +155,7 @@ class CurrencyConverterApp extends React.Component {
             <div className= {styles.converter_container} id= "converter-container">
 			<p>Type in amount and select currency :</p>
 			   <input className={styles.inputamount} id="inputamount"  type = "text"  value = {this.state.amountentered} 
-               onChange = {this.updateState} placeholder="0.00" />
+               onChange = {this.updateState} />
 			   <label className={styles.sel_label_text}>{this.state.currencyformatfrom}</label>
 			  <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimageup" onClick={this.openList}/>
 			  <div className={styles.ul_currency_container} style={{display : this.state.showhideupperoptions}} id="currency-container-up" >
@@ -170,7 +170,7 @@ class CurrencyConverterApp extends React.Component {
 			   </div>
 			   <div>
 			    <p>Converted amount:</p>
-			   <input className={styles.inputamount} id="convertedamountbox" type = "text"  value = {this.state.convertedamount} placeholder="0.00"/>
+			   <input className={styles.inputamount} id="convertedamountbox" type = "text"  value = {this.state.convertedamount}/>
 			   <label className={styles.sel_label_text}>{this.state.currencyformatto}</label>
 			   <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimagedown" onClick={this.openList}/>
 			   <div className={styles.ul_currency_container} style={{display : this.state.showhideloweroptions}} id="currency-container-down" >
