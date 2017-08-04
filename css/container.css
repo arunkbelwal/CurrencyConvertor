@@ -1,0 +1,52 @@
+@media (min-width: 1281px) {
+.app_one{
+	margin-left: 16px;
+    position: absolute;
+  }
+  
+  .app_two{
+    position: absolute;
+    margin-left: 374px;
+  }
+  
+  .app_three{
+	margin-left: 732px;
+    position: absolute;
+  }
+
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+.app_one{
+	margin-left: 16px;
+    position: absolute;
+  }
+  
+  .app_two{
+    position: absolute;
+    margin-left: 374px;
+  }
+  
+  .app_three{
+	margin-left: 732px;
+    position: absolute;
+  }
+
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+.app_one{
+	margin-left: 0px;
+     }
+  
+  .app_two{
+    margin-left: 0px;
+  }
+  
+  .app_three{
+	margin-left: 0px;
+  }
+
+}
+

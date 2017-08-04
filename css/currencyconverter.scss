@@ -14,7 +14,7 @@
 		 padding :10px;
 		 margin-bottom: 40px;
 		 margin-top: 45px;
-		 margin-left: 368px;
+		 
 	}
 	
 
@@ -89,6 +89,8 @@
 	   text-align: center;
 	   height: 0px;
   }
+  
+  
 }
 
 /* 
@@ -106,7 +108,7 @@
 		 padding :10px;
 		 margin-bottom: 40px;
 		 margin-top: 45px;
-		 margin-left: 368px;
+		 
 	}
 	 
 	.ul_currency_container{
@@ -181,6 +183,18 @@
 	   text-align: center;
 	   height: 0px;
     }
+	
+	.disclaimer_message{
+		width: 290px;
+		margin-top: -8px;
+		height: 32px;
+		font-size: 10px;
+		font-style: italic;
+		font-weight: bold;
+		font-family: sans-serif;
+		border-radius: 4px;
+		background-color: whitesmoke;
+	}
 }
 
 /* 
@@ -191,14 +205,13 @@
 @media (min-width: 768px) and (max-width: 1024px) {
 	  
 	.main_container{
-		 width: 100%;
-		 height: auto;
-		 border : 1px solid;
-		 marginLeft : 10px;
-		 padding :45px;
-		 margin-bottom: 40px;
-		 margin-top: 45px;
-		 margin-left: 0px;
+		width: 90%;
+		height: auto;
+		border: 1px solid;
+		padding-left: 92px;
+		padding-bottom: 36px;
+		margin-bottom: 40px;
+		margin-top: 45px;
 	}
 	  
 	     
@@ -246,7 +259,7 @@
 	}
 	
 	.disclaimer_link{
-		margin-left: 600px;
+		margin-left: 537px;
 		margin-top: 35px;
 		padding: 9px;
 	}
@@ -267,7 +280,7 @@
 	   width: 154px;
 		list-style-type: none;
 		margin: 0px;
-		margin-left: 139px;
+		margin-left: 92px;
 		height: auto;
 		font-size: 43px;
 		color: grey;
@@ -300,6 +313,19 @@
 	   text-align: center;
 	   height: 0px;
     }
+	
+	.disclaimer_message{
+		width: 90%;
+		height: auto;
+		margin-top: 5px;
+		font-size: 13px;
+		font-style: italic;
+		font-weight: bold;
+		font-family: sans-serif;
+		border-radius: 4px;
+		background-color: whitesmoke;
+	}
+	
 }
 
 /* 
@@ -309,15 +335,14 @@
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
   
-	  .main_container{
-		 width: 100%;
-		 height: auto;
-		 border : 1px solid;
-		 marginLeft : 10px;
-		 padding :45px;
-		 margin-bottom: 40px;
-		 margin-top: 45px;
-		 margin-left: 0px;
+	.main_container{
+		width: 90%;
+		height: auto;
+		border: 1px solid;
+		padding-left: 92px;
+		padding-bottom: 36px;
+		margin-bottom: 40px;
+		margin-top: 45px;
 	}
 	  
 	     
@@ -365,7 +390,7 @@
 	}
 	
 	.disclaimer_link{
-		margin-left: 600px;
+		margin-left: 537px;
 		margin-top: 35px;
 		padding: 9px;
 	}
@@ -386,7 +411,7 @@
 	   width: 154px;
 		list-style-type: none;
 		margin: 0px;
-		margin-left: 139px;
+		margin-left: 92px;
 		height: auto;
 		font-size: 43px;
 		color: grey;
@@ -418,6 +443,18 @@
 	   text-align: center;
 	   height: 0px;
     }
+	
+	.disclaimer_message{
+		width: 290px;
+		margin-top: -8px;
+		height: 32px;
+		font-size: 10px;
+		font-style: italic;
+		font-weight: bold;
+		font-family: sans-serif;
+		border-radius: 4px;
+		background-color: whitesmoke;
+	}
 }
 
 /* 
@@ -548,5 +585,6 @@
 	   text-align: center;
 	   height: 0px;
     }
+	
 }
    

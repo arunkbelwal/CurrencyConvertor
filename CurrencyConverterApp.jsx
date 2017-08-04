@@ -15,16 +15,16 @@ class CurrencyConverterApp extends React.Component {
 		 currencyformatfrom : 'CAD',
 		 exchangerates : '',
 		 showhideupperoptions : 'none' ,
-		 showhideloweroptions : 'none' 
+		 showhideloweroptions : 'none' ,
+		 showhidedisclaimermsg : 'none' 
       }
 
       this.updateState = this.updateState.bind(this);
 	  this.openList = this.openList.bind(this);
-	  this.showAdditionalExchangeRates = this.showAdditionalExchangeRates.bind(this);
+	  this.showDisclaimerMessage = this.showDisclaimerMessage.bind(this);
 	  this.getSelectionChangeForFromDropdown = this.getSelectionChangeForFromDropdown.bind(this);
 	  this.getSelectionChangeForToDropdown = this.getSelectionChangeForToDropdown.bind(this);
-	  this.showExchangeRates = this.showExchangeRates.bind(this);
-
+	  
    };
 
     
@@ -61,22 +61,17 @@ class CurrencyConverterApp extends React.Component {
 	
   };
    
-   showAdditionalExchangeRates(event){
-	   var addtional_rates = window.open('http://api.fixer.io/latest', '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
-	   addtional_rates.document.write('<head><title>Additional Currency Rates</title></head>');	  
-	   addtional_rates.document.write('<center><h1>Additional Currency Rates</h1></center>');
-		
-		var rates= {};
-		rates=this.state.exchangerates.rates;
-		addtional_rates.document.write('<center><div> <h2>Base Currency : '+this.state.exchangerates.base+'</h2></div></center>');
-		addtional_rates.document.write('<center><div> <h2> Dated : </bold>'+this.state.exchangerates.date+'</h2></div></center>');
-			addtional_rates.document.write('<center><div> <h4>Value of 1 '+ this.state.exchangerates.base +' w.r.t other currencies</h4></div></center>');
-	  for(var rate in rates){
-		   addtional_rates.document.write('<center><p>'+rate+' : '+rates[rate]+'</p><center>');
-	   }
-	   
-	   
-	   console.log(this.state.exchangerates);
+   showDisclaimerMessage(event){
+	   var disclimermsgstatus = document.getElementById('disclaimer-msg-container');
+	   if(disclimermsgstatus.style.display === 'none'){
+					  this.setState({ showhidedisclaimermsg: 'block'},function () {
+						   console.log("disclaimer msg shown")
+						});
+		 }else if(disclimermsgstatus.style.display === 'block'){
+			  this.setState({ showhidedisclaimermsg: 'none'},function () {
+				   console.log("discliamer msg hidden")
+				});
+		 }
 
    };
   
@@ -87,7 +82,7 @@ class CurrencyConverterApp extends React.Component {
      // document.getElementById('selectedCurrencyFormatFrom').value = currentselec;
 	  this.setState({ currencyformatfrom: event.target.innerText},function () {
        this.updateState();
-	   this.showExchangeRates();
+	   
     });
 	  
   };
@@ -103,37 +98,7 @@ class CurrencyConverterApp extends React.Component {
 	  
 	  
   };
-  
-  showExchangeRates(event){
-	  
-	 let responseStr ="";
-	 var  selectedcurrencyfrom = this.state.currencyformatfrom;
-	 var promise = new Promise( (resolve, reject) => {
-				   axios.get('http://api.fixer.io/latest?base='+selectedcurrencyfrom)
-				  .then(function (response) {
-					console.log(response);
-					 if (response != null) {
-						   resolve( responseStr = response.data);
-					  }
-					  else {
-					   reject(Error("Promise rejected"));
-					  }
-					
-				  });
-				  
-				  
-				  
-		   });
-		   
-		   promise.then( result => {
-			 
-			 this.setState({ exchangerates : responseStr},function () {
-				console.log("exchange reates loaded successfully!");
-			});
-			 }, function(error) {
-			  console.log("some error occured!");
-			 });
-  };
+   
   
    updateState() {
 	   var inputamount = document.getElementById('inputamount').value;
@@ -184,13 +149,13 @@ class CurrencyConverterApp extends React.Component {
    
    render() {
       return (
-         <div className ={styles.main_container} id ="main-container"  onLoad= {this.showExchangeRates}>
+         <div className ={styles.main_container} id ="main-container">
 		 
 		 <div><span className={styles.heading}>Currency converter</span></div>
             <div className= {styles.converter_container} id= "converter-container">
 			<p>Type in amount and select currency :</p>
 			   <input className={styles.inputamount} id="inputamount"  type = "text"  value = {this.state.amountentered} 
-               onChange = {this.updateState} />
+               onChange = {this.updateState} placeholder="0.00" />
 			   <label className={styles.sel_label_text}>{this.state.currencyformatfrom}</label>
 			  <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimageup" onClick={this.openList}/>
 			  <div className={styles.ul_currency_container} style={{display : this.state.showhideupperoptions}} id="currency-container-up" >
@@ -205,7 +170,7 @@ class CurrencyConverterApp extends React.Component {
 			   </div>
 			   <div>
 			    <p>Converted amount:</p>
-			   <input className={styles.inputamount} id="convertedamountbox" type = "text"  value = {this.state.convertedamount} />
+			   <input className={styles.inputamount} id="convertedamountbox" type = "text"  value = {this.state.convertedamount} placeholder="0.00"/>
 			   <label className={styles.sel_label_text}>{this.state.currencyformatto}</label>
 			   <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimagedown" onClick={this.openList}/>
 			   <div className={styles.ul_currency_container} style={{display : this.state.showhideloweroptions}} id="currency-container-down" >
@@ -222,8 +187,10 @@ class CurrencyConverterApp extends React.Component {
 			    
 			 	   
 			   <div className={styles.disclaimer_link}>
-					<a className={styles.disclaimer_label}  onClick={this.showAdditionalExchangeRates}>disclaimer</a>
+					<a className={styles.disclaimer_label}  onClick={this.showDisclaimerMessage}>Disclaimer</a>
 			   </div>
+			   <div className={styles.disclaimer_message} id="disclaimer-msg-container" style={{display : this.state.showhidedisclaimermsg}} >
+			   The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</div>
 			   <div className={styles.author_text}><p>Developer : Arun Belwal , version 1.0</p></div>
          </div>
       );
