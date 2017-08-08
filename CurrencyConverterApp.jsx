@@ -11,57 +11,23 @@ class CurrencyConverterApp extends React.Component {
       this.state = {
          amountentered: 0.00,
 		 convertedamount : 0.00,
-		 currencyformatto : 'USD',
 		 currencyformatfrom : 'CAD',
+		 currencyformatto : 'USD',
 		 exchangerates : '',
-		 showhideupperoptions : 'none' ,
-		 showhideloweroptions : 'none' ,
-		 showhidedisclaimermsg : 'none' 
+		 showhidedisclaimermsg : 'none'
       }
-
-      this.updateState = this.updateState.bind(this);
-	  this.openList = this.openList.bind(this);
+	    
+	  this.updateState = this.updateState.bind(this);
 	  this.showDisclaimerMessage = this.showDisclaimerMessage.bind(this);
 	  this.getSelectionChangeForFromDropdown = this.getSelectionChangeForFromDropdown.bind(this);
 	  this.getSelectionChangeForToDropdown = this.getSelectionChangeForToDropdown.bind(this);
+	  this.calculateExchangeRate =  this.calculateExchangeRate.bind(this);
 	  
    };
 
-    
-  openList(event){
-	 
-	 var element = event.target;
-	 var elementId = event.target.id;
-	 var upperDropdown = document.getElementById('currency-container-up');
-	var lowerDropdown = document.getElementById('currency-container-down');
-			 if(elementId === 'arrowimageup'){
-				 if(upperDropdown.style.display === 'none'){
-					  this.setState({ showhideupperoptions: 'block'},function () {
-						   console.log("expanded")
-						});
-				 }else if(upperDropdown.style.display === 'block'){
-					  this.setState({ showhideupperoptions: 'none'},function () {
-						   console.log("collapse")
-						});
-				 }
-			 }else if(elementId === 'arrowimagedown'){
-				 if(lowerDropdown.style.display === 'none'){
-					 this.setState({ showhideloweroptions: 'block'},function () {
-						   console.log("expanded")
-						});
-				 }else if(lowerDropdown.style.display === 'block'){
-					  this.setState({ showhideloweroptions: 'none'},function () {
-						   console.log("collapse")
-						});
-				 }
-			 }
-			 
-			 
-			
+  
 	
-  };
-   
-   showDisclaimerMessage(event){
+    showDisclaimerMessage(event){
 	   var disclimermsgstatus = event.target.parentNode.nextSibling;
 	   if(disclimermsgstatus.style.display === 'none'){
 					  this.setState({ showhidedisclaimermsg: 'block'},function () {
@@ -75,44 +41,53 @@ class CurrencyConverterApp extends React.Component {
 
    };
   
-  getSelectionChangeForFromDropdown(event){
-	 this.setState({ showhideupperoptions: 'none'},function () {
-						   console.log("collapsed")
-	});
-     // document.getElementById('selectedCurrencyFormatFrom').value = currentselec;
-	  this.setState({ currencyformatfrom: event.target.innerText},function () {
-       this.updateState(event);
-	   
-    });
-	  
-  };
+    getSelectionChangeForFromDropdown(event){
+		var sel = event.target;
+		var seloptval = sel.options[sel.selectedIndex].value;
+		var inputamount = event.target.parentNode.previousSibling.value;
+		 this.setState({currencyformatfrom : seloptval},function(){
+			console.log('from drop down');
+			this.calculateExchangeRate(inputamount);
+		});
+    	  
+     };
   
-  getSelectionChangeForToDropdown(event){
-	this.setState({ showhideloweroptions: 'none'},function () {
-						   console.log("collapsed")
-	});
-     // document.getElementById('selectedCurrencyFormatTo').value = currentselec;
-	  this.setState({ currencyformatto: event.target.innerText},function () {
-       this.updateState(event);
-    });
-	  
-	  
-  };
+	getSelectionChangeForToDropdown(event){
+		var sel = event.target;
+		var seloptval = sel.options[sel.selectedIndex].value;
+		var inputamount=event.target.parentNode.parentNode.previousSibling.childNodes[1].value;
+		this.setState({currencyformatto : seloptval},function(){
+			this.calculateExchangeRate(inputamount);
+					
+		});
+       
+    };
    
   
-   updateState(event) {
-	   var inputamount = event.target.value;
-	   //var  selectedcurrencyfrom = document.getElementById('selectedCurrencyFormatFrom').value;
-	  // var  selectedcurrencyto = document.getElementById('selectedCurrencyFormatTo').value;
-	  var  selectedcurrencyfrom = this.state.currencyformatfrom;
-	  var  selectedcurrencyto =  this.state.currencyformatto;
+	updateState(event) {
+		var inputElemObj = event.target;
+ 	    var invalidChars = /[^0-9]/gi
+		if (invalidChars.test(inputElemObj.value)) {
+			inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
+				
+		}
+		else {
+			this.calculateExchangeRate(inputElemObj.value);
+		}
+	};
+   
+	calculateExchangeRate(inputamount){
+	  
+		var  selectedcurrencyfrom = this.state.currencyformatfrom;
+		var  selectedcurrencyto =  this.state.currencyformatto;
 	   if(selectedcurrencyfrom === selectedcurrencyto){
 		  // document.getElementById('convertedamountbox').value =  inputamount;
-		    this.setState({convertedamount: inputamount},function(){
+			this.setState({convertedamount: inputamount},function(){
 				console.log("current format are same");
 			});
 	   }else{
 		   var currencyrate = '';
+		   var convertedamounttemp = '';
 		   var promise = new Promise( (resolve, reject) => {
 				   
 				   this.setState({amountentered: inputamount});
@@ -122,6 +97,8 @@ class CurrencyConverterApp extends React.Component {
 					console.log(response);
 					 if (response != null) {
 						   resolve( currencyrate = response.data.rates[selectedcurrencyto]);
+						   
+						   resolve( convertedamounttemp = (currencyrate*inputamount) );
 					  }
 					  else {
 					   reject(Error("Promise rejected"));
@@ -136,7 +113,9 @@ class CurrencyConverterApp extends React.Component {
 		   promise.then( result => {
 			  // currencyrate = document.getElementById('conversionrates').value ;
 				// document.getElementById('convertedamountbox').value =  (currencyrate*inputamount);
-				 this.setState({convertedamount: (currencyrate*inputamount)});
+				 this.setState({convertedamount: convertedamounttemp.toFixed(2)},function(){
+					  console.log("success occured!");
+				 });
 			 }, function(error) {
 			  console.log("some error occured!");
 			 });
@@ -146,7 +125,6 @@ class CurrencyConverterApp extends React.Component {
    };
    
    
-   
    render() {
       return (
          <div className ={styles.main_container} id ="main-container">
@@ -154,34 +132,31 @@ class CurrencyConverterApp extends React.Component {
 		 <div><span className={styles.heading}>Currency converter</span></div>
             <div className= {styles.converter_container} id= "converter-container">
 			<p>Type in amount and select currency :</p>
-			   <input className={styles.inputamount} id="inputamount"  type = "text"  value = {this.state.amountentered} 
-               onChange = {this.updateState} />
-			   <label className={styles.sel_label_text}>{this.state.currencyformatfrom}</label>
-			  <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimageup" onClick={this.openList}/>
-			  <div className={styles.ul_currency_container} style={{display : this.state.showhideupperoptions}} id="currency-container-up" >
-					<ul className={styles.ul_currency_options_expaned}  id="currency-type-options" >
-						<li onClick={this.getSelectionChangeForFromDropdown} value="CAD" >CAD</li>
-						<li onClick={this.getSelectionChangeForFromDropdown} value="USD" >USD</li>
-						<li onClick={this.getSelectionChangeForFromDropdown} value="EUR">EUR</li>
-					</ul>
+			<input  type="text"  className={styles.inputamount} id="user-input-amount" onChange = {this.updateState} />
+			 			 
+			  <div className={styles.currency_container} id="currency-container-up" >
+					<select className={styles.currency_options} onChange={this.getSelectionChangeForFromDropdown} id="currency-type-options-up" >
+						<option>CAD</option>
+						<option>USD</option>
+						<option>EUR</option>
+					</select>
 					
 				</div>
-			   <input type="hidden" id="selectedCurrencyFormatFrom" value= {this.state.currencyformatfrom} ></input>
+			   
 			   </div>
 			   <div>
 			    <p>Converted amount:</p>
-			   <input className={styles.inputamount} id="convertedamountbox" type = "text"  value = {this.state.convertedamount}/>
-			   <label className={styles.sel_label_text}>{this.state.currencyformatto}</label>
-			   <img src="../images/arrow.png" className={styles.updownarrows_ul} id="arrowimagedown" onClick={this.openList}/>
-			   <div className={styles.ul_currency_container} style={{display : this.state.showhideloweroptions}} id="currency-container-down" >
-					<ul className={styles.ul_currency_options_expaned}  id="currency-type-options" >
-						<li onClick={this.getSelectionChangeForToDropdown} value="USD" >USD</li>
-						<li onClick={this.getSelectionChangeForToDropdown} value="CAD" >CAD</li>
-						<li onClick={this.getSelectionChangeForToDropdown} value="EUR">EUR</li>
-					</ul>
-					
+			   <input type="text" className={styles.inputamount} id="convertedamountbox" value = {this.state.convertedamount} disabled  />
+			   		  
+			   <div className={styles.currency_container} id="currency-container-down" >
+					<select className={styles.currency_options} onChange={this.getSelectionChangeForToDropdown} id="currency-type-options-down" >
+						<option>USD</option>
+						<option>CAD</option>
+						<option>EUR</option>
+					</select>
+					 
 				</div>
-			   <input type="hidden" id="selectedCurrencyFormatTo" value= {this.state.currencyformatto}></input>
+			   
 			   <input type = "hidden" id="conversionrates"/>
 			   </div>
 			    
@@ -190,7 +165,7 @@ class CurrencyConverterApp extends React.Component {
 					<a className={styles.disclaimer_label}  onClick={this.showDisclaimerMessage}>Disclaimer</a>
 			   </div>
 			   <div className={styles.disclaimer_message} id="disclaimer-msg-container" style={{display : this.state.showhidedisclaimermsg}} >
-			   The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</div>
+			   <span>The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</span></div>
 			   <div className={styles.author_text}><p>Developer : Arun Belwal , version 1.0</p></div>
          </div>
       );

@@ -38,14 +38,17 @@
 @media (min-width: 768px) and (max-width: 1024px) {
 .app_one{
 	margin-left: 0px;
+	border: 1px solid;
      }
   
   .app_two{
     margin-left: 0px;
+	border: 1px solid;
   }
   
   .app_three{
 	margin-left: 0px;
+	border: 1px solid;
   }
 
 }
