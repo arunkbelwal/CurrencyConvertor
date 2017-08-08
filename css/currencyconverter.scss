@@ -218,9 +218,9 @@
 	}
 
 	.disclaimer_link{
-		margin-left: 537px;
-		margin-top: 35px;
-		padding: 9px;
+		margin-left: 575px;
+		margin-top: 7px;
+		padding: 4px;
 	}
 
 	.disclaimer_label{
@@ -232,7 +232,7 @@
 	.currency_options{
 	    width: 180px;
 		margin: 0px;
-		margin-left: 92px;
+		margin-left: 16px;
 		margin-top: 1px;
 		height: auto;
 		font-size: 43px;
@@ -246,7 +246,11 @@
         padding: 0px;
 		font-size: 8px;
 		text-align: center;
-		height: 40px;
+		height: 16px;
+    }
+	
+	.author_text p{
+        font-size: 18px;
     }
 	
 	.disclaimer_message{
@@ -261,6 +265,9 @@
 		background-color: whitesmoke;
 	}
 	
+	.disclaimer_message span{
+		font-size: 16px;
+	}
 }
 
 /* 
@@ -445,12 +452,13 @@
 @media (min-width: 320px) and (max-width: 767px) {
   
 	.main_container{
-		width: 220px;
+		width: 89%;
 		height: auto;
 		border: 1px solid;
 		padding: 4px;
 		margin-bottom: 20px;
 		margin-top: 0px;
+		padding-left: 36px;
 	}
 	  
 	     
@@ -492,6 +500,7 @@
 	.disclaimer_link{
 		margin-top: 10px;
 		padding: 0px;
+		margin-left: 206px;
 	}
 
 	.disclaimer_label{

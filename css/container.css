@@ -53,3 +53,19 @@
 
 }
 
+@media (min-width: 320px) and (max-width: 767px) {
+	.app_one{
+	 margin-left: -2px;
+	 
+     }
+  
+	  .app_two{
+		margin-left: -2px;
+	  }
+	  
+	  .app_three{
+		margin-left: -2px;
+	  }
+
+}
+
