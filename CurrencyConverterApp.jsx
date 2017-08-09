@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import styles from './css/main.scss';
 
+
 class CurrencyConverterApp extends React.Component {
    
    
@@ -10,11 +11,12 @@ class CurrencyConverterApp extends React.Component {
 		
       this.state = {
          amountentered: 0.00,
-		 convertedamount : 0.00,
+		 convertedamount : '',
 		 currencyformatfrom : 'CAD',
 		 currencyformatto : 'USD',
 		 exchangerates : '',
-		 showhidedisclaimermsg : 'none'
+		 showhidedisclaimermsg : 'none',
+		 showhidenetworkerrmsg : 'block'
       }
 	    
 	  this.updateState = this.updateState.bind(this);
@@ -66,7 +68,7 @@ class CurrencyConverterApp extends React.Component {
   
 	updateState(event) {
 		var inputElemObj = event.target;
- 	    var invalidChars = /[^0-9]/gi
+ 	    var invalidChars = /[^.0-9]/gi
 		if (invalidChars.test(inputElemObj.value)) {
 			inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
 				
@@ -117,9 +119,8 @@ class CurrencyConverterApp extends React.Component {
 					  console.log("success occured!");
 				 });
 			 }, function(error) {
-			  console.log("some error occured!");
-			 });
-				  
+			          console.log("some network error occured!");
+  			 });
 	
 	   }
    };
@@ -127,46 +128,45 @@ class CurrencyConverterApp extends React.Component {
    
    render() {
       return (
-         <div className ={styles.main_container} id ="main-container">
-		 
-		 <div><span className={styles.heading}>Currency converter</span></div>
-            <div className= {styles.converter_container} id= "converter-container">
-			<p>Type in amount and select currency :</p>
-			<input  type="text"  className={styles.inputamount} id="user-input-amount" onChange = {this.updateState} />
-			 			 
-			  <div className={styles.currency_container} id="currency-container-up" >
-					<select className={styles.currency_options} onChange={this.getSelectionChangeForFromDropdown} id="currency-type-options-up" >
-						<option>CAD</option>
-						<option>USD</option>
-						<option>EUR</option>
-					</select>
+         <div  id ="main-container">
+   		  <div><span className="slds-text-heading_large">Currency converter</span></div>
+            <div  id= "converter-container">
 					
+		    <div className="slds-form-element">
+			  <label className="slds-form-element__label" for="text-input-id-1">Type in amount and select currency :</label>
+			  <div className="slds-form-element__control">
+				<input type="text" id="text-input-id-1" className={styles.slds_modified_input} placeholder="0.00" id="user-input-amount" onChange = {this.updateState}/>
+				<div className={styles.slds_modified_select_container} id="currency-container-up">
+				  <select className="slds-select" id="select-01" onChange={this.getSelectionChangeForFromDropdown}>
+					<option>CAD</option>
+					<option>USD</option>
+					<option>EUR</option>
+				  </select>
 				</div>
-			   
-			   </div>
-			   <div>
-			    <p>Converted amount:</p>
-			   <input type="text" className={styles.inputamount} id="convertedamountbox" value = {this.state.convertedamount} disabled  />
-			   		  
-			   <div className={styles.currency_container} id="currency-container-down" >
-					<select className={styles.currency_options} onChange={this.getSelectionChangeForToDropdown} id="currency-type-options-down" >
+			  </div>
+			  
+			  <label className="slds-form-element__label" for="convertedamountbox">Converted amount:</label>
+			  <div className="slds-form-element__control">
+			  <input type="text" id="convertedamountbox" value = {this.state.convertedamount} className={styles.slds_modified_input} disabled/>
+				<div className={styles.slds_modified_select_container} id="currency-container-down">
+				  <select className="slds-select" id="select-02" onChange={this.getSelectionChangeForToDropdown} id="currency-type-options-down">
 						<option>USD</option>
 						<option>CAD</option>
 						<option>EUR</option>
-					</select>
-					 
+				  </select>
 				</div>
+			  </div>
+			</div>
 			   
-			   <input type = "hidden" id="conversionrates"/>
 			   </div>
-			    
+			
 			 	   
 			   <div className={styles.disclaimer_link}>
 					<a className={styles.disclaimer_label}  onClick={this.showDisclaimerMessage}>Disclaimer</a>
 			   </div>
 			   <div className={styles.disclaimer_message} id="disclaimer-msg-container" style={{display : this.state.showhidedisclaimermsg}} >
 			   <span>The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</span></div>
-			   <div className={styles.author_text}><p>Developer : Arun Belwal , version 1.0</p></div>
+			   
          </div>
       );
    }
