@@ -16,7 +16,8 @@ class CurrencyConverterApp extends React.Component {
 		 currencyformatto : 'USD',
 		 exchangerates : '',
 		 showhidedisclaimermsg : 'none',
-		 showhidenetworkerrmsg : 'block'
+		 showhidenetworkerrmsg : 'block',
+		 inputAmount : 0
       }
 	    
 	  this.updateState = this.updateState.bind(this);
@@ -29,27 +30,18 @@ class CurrencyConverterApp extends React.Component {
 
   
 	
-    showDisclaimerMessage(event){
-	   var disclimermsgstatus = event.target.parentNode.nextSibling;
-	   if(disclimermsgstatus.style.display === 'none'){
-					  this.setState({ showhidedisclaimermsg: 'block'},function () {
-						   console.log("disclaimer msg shown")
-						});
-		 }else if(disclimermsgstatus.style.display === 'block'){
-			  this.setState({ showhidedisclaimermsg: 'none'},function () {
-				   console.log("discliamer msg hidden")
-				});
-		 }
-
+    showDisclaimerMessage(){
+	   document.getElementById("disclaimer-msg-container").classList.toggle("main__hide___3TkWs");
    };
   
     getSelectionChangeForFromDropdown(event){
 		var sel = event.target;
 		var seloptval = sel.options[sel.selectedIndex].value;
-		var inputamount = event.target.parentNode.previousSibling.value;
+		//var inputamount = event.target.parentNode.previousSibling.value;
+		var inputamount = this.state.inputAmount;
 		 this.setState({currencyformatfrom : seloptval},function(){
-			console.log('from drop down');
-			this.calculateExchangeRate(inputamount);
+			
+			this.calculateExchangeRate(this.state.inputAmount);
 		});
     	  
      };
@@ -57,9 +49,9 @@ class CurrencyConverterApp extends React.Component {
 	getSelectionChangeForToDropdown(event){
 		var sel = event.target;
 		var seloptval = sel.options[sel.selectedIndex].value;
-		var inputamount=event.target.parentNode.parentNode.previousSibling.childNodes[1].value;
+		//var inputamount=event.target.parentNode.parentNode.previousSibling.childNodes[1].value;
 		this.setState({currencyformatto : seloptval},function(){
-			this.calculateExchangeRate(inputamount);
+			this.calculateExchangeRate(this.state.inputAmount);
 					
 		});
        
@@ -68,13 +60,15 @@ class CurrencyConverterApp extends React.Component {
   
 	updateState(event) {
 		var inputElemObj = event.target;
- 	    var invalidChars = /[^.0-9]/gi
+ 	    var invalidChars = /[^.0-9]/gi;
+		var invlidInput = /^[0-9]+\.[0-9][0-9]$/gi;
 		if (invalidChars.test(inputElemObj.value)) {
 			inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
 				
-		}
-		else {
-			this.calculateExchangeRate(inputElemObj.value);
+		}else {
+			this.setState({inputAmount : inputElemObj.value},function(){
+				this.calculateExchangeRate(this.state.inputAmount);
+			});
 		}
 	};
    
@@ -84,19 +78,17 @@ class CurrencyConverterApp extends React.Component {
 		var  selectedcurrencyto =  this.state.currencyformatto;
 	   if(selectedcurrencyfrom === selectedcurrencyto){
 		  // document.getElementById('convertedamountbox').value =  inputamount;
-			this.setState({convertedamount: inputamount},function(){
-				console.log("current format are same");
-			});
+			this.setState({convertedamount: inputamount});
 	   }else{
 		   var currencyrate = '';
 		   var convertedamounttemp = '';
 		   var promise = new Promise( (resolve, reject) => {
 				   
 				   this.setState({amountentered: inputamount});
-				   var fixerapiurl = 'http://api.fixer.io/latest?base='+selectedcurrencyfrom;
+				   var fixerapiurl = 'https://api.fixer.io/latest?base='+selectedcurrencyfrom;
 				   axios.get(fixerapiurl)
 				  .then(function (response) {
-					console.log(response);
+					
 					 if (response != null) {
 						   resolve( currencyrate = response.data.rates[selectedcurrencyto]);
 						   
@@ -115,11 +107,9 @@ class CurrencyConverterApp extends React.Component {
 		   promise.then( result => {
 			  // currencyrate = document.getElementById('conversionrates').value ;
 				// document.getElementById('convertedamountbox').value =  (currencyrate*inputamount);
-				 this.setState({convertedamount: convertedamounttemp.toFixed(2)},function(){
-					  console.log("success occured!");
-				 });
+				 this.setState({convertedamount: convertedamounttemp.toFixed(2)});
 			 }, function(error) {
-			          console.log("some network error occured!");
+			         
   			 });
 	
 	   }
@@ -135,7 +125,7 @@ class CurrencyConverterApp extends React.Component {
 		    <div className="slds-form-element">
 			  <label className="slds-form-element__label" for="text-input-id-1">Type in amount and select currency :</label>
 			  <div className="slds-form-element__control">
-				<input type="text" id="text-input-id-1" className={styles.slds_modified_input} placeholder="0.00" id="user-input-amount" onChange = {this.updateState}/>
+				<input type="text" id="text-input-id-1" className={styles.slds_modified_input} placeholder="0.00" id="user-input-amount" onChange = {this.updateState} />
 				<div className={styles.slds_modified_select_container} id="currency-container-up">
 				  <select className="slds-select" id="select-01" onChange={this.getSelectionChangeForFromDropdown}>
 					<option>CAD</option>
@@ -147,9 +137,9 @@ class CurrencyConverterApp extends React.Component {
 			  
 			  <label className="slds-form-element__label" for="convertedamountbox">Converted amount:</label>
 			  <div className="slds-form-element__control">
-			  <input type="text" id="convertedamountbox" value = {this.state.convertedamount} className={styles.slds_modified_input} disabled/>
+			  <input type="text" id="convertedamountbox" value = {this.state.convertedamount} className={styles.slds_modified_input} disabled />
 				<div className={styles.slds_modified_select_container} id="currency-container-down">
-				  <select className="slds-select" id="select-02" onChange={this.getSelectionChangeForToDropdown} id="currency-type-options-down">
+				  <select className="slds-select" id="select-02" onChange={this.getSelectionChangeForToDropdown} id="currency-type-options-down" >
 						<option>USD</option>
 						<option>CAD</option>
 						<option>EUR</option>
@@ -162,10 +152,10 @@ class CurrencyConverterApp extends React.Component {
 			
 			 	   
 			   <div className={styles.disclaimer_link}>
-					<a className={styles.disclaimer_label}  onClick={this.showDisclaimerMessage}>Disclaimer</a>
+					<a href="#" className={styles.disclaimer_label}  onClick={this.showDisclaimerMessage} >Disclaimer</a>
 			   </div>
-			   <div className={styles.disclaimer_message} id="disclaimer-msg-container" style={{display : this.state.showhidedisclaimermsg}} >
-			   <span>The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</span></div>
+			   <div className={styles.hide} id="disclaimer-msg-container">
+			   <span className={styles.disclaimer_message}>The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</span></div>
 			   
          </div>
       );
