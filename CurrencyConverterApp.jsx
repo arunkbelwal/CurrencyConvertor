@@ -100,14 +100,17 @@ class CurrencyConverterApp extends React.Component {
 					
 					 if (response != null) {
 						   resolve( currencyrate = response.data.rates[selectedcurrencyto]);
-						   
 						   resolve( convertedamounttemp = (currencyrate*inputamount) );
+						   document.getElementById("error_container").innerText="";
 					  }
 					  else {
 					   reject(Error("Promise rejected"));
+					   
 					  }
 					
-				  });
+				  }) .catch(error => {
+								document.getElementById("error_container").innerText= error.message+"!!";
+					 });
 				  
 				  
 				  
@@ -117,7 +120,8 @@ class CurrencyConverterApp extends React.Component {
 			  
 				 this.setState({convertedamount: convertedamounttemp.toFixed(2)});
 			 }, function(error) {
-			         
+			         document.write(error);
+					 console.log("error!");
   			 });
 	
 	   }
@@ -131,7 +135,7 @@ class CurrencyConverterApp extends React.Component {
             <div  id= "converter-container">
 					
 		    <div className="slds-form-element">
-			  <label className="slds-form-element__label" for="text-input-id-1">Type in amount and select currency :</label>
+			  <label className="slds-form-element__label" htmlFor="text-input-id-1">Type in amount and select currency :</label>
 			  <div className="slds-form-element__control">
 				<input type="text" id="text-input-id-1" className={styles.slds_modified_input} placeholder="0.00" id="user-input-amount" onChange = {this.updateState} />
 				<div className={styles.slds_modified_select_container} id="currency-container-up">
@@ -143,7 +147,7 @@ class CurrencyConverterApp extends React.Component {
 				</div>
 			  </div>
 			  
-			  <label className="slds-form-element__label" for="convertedamountbox">Converted amount:</label>
+			  <label className="slds-form-element__label" htmlFor="convertedamountbox">Converted amount:</label>
 			  <div className="slds-form-element__control">
 			  <input type="text" id="convertedamountbox" value = {this.state.convertedamount} className={styles.slds_modified_input} disabled />
 				<div className={styles.slds_modified_select_container} id="currency-container-down">
@@ -166,6 +170,7 @@ class CurrencyConverterApp extends React.Component {
 			   <span className={styles.disclaimer_message}>The currency rates are not latest and are based on data from fixer api. Developer is not responsible for the accuracy of these rates.</span></div>
 			   
          </div>
+		 
       );
    }
 }

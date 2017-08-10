@@ -5,6 +5,13 @@
 		padding: 25px;
 	}
 	
+	.error_container{
+		color: red;
+		padding: 5px;
+		text-align: center;
+		font-size: 14px;
+	}
+	
 @media (min-width: 1281px) {
 
 .slds_grid_modified{
@@ -31,6 +38,7 @@
 @media (min-width: 320px) and (max-width: 767px) {
 	.slds_grid_modified{
 	display : block;
+	
 }
 
 }
