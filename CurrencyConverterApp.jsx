@@ -30,8 +30,8 @@ class CurrencyConverterApp extends React.Component {
 
   
 	
-    showDisclaimerMessage(){
-	   document.getElementById("disclaimer-msg-container").classList.toggle("main__hide___3TkWs");
+    showDisclaimerMessage(event){
+	   event.target.parentNode.nextSibling.classList.toggle("main__hide___3TkWs");
    };
   
     getSelectionChangeForFromDropdown(event){
@@ -66,6 +66,17 @@ class CurrencyConverterApp extends React.Component {
 			inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
 				
 		}else {
+			
+			var inputAmountArr = inputElemObj.value.split(".");
+			if(inputAmountArr[1] != undefined && inputAmountArr[1] != null && inputElemObj.value.indexOf(".") === inputElemObj.value.lastIndexOf(".") && inputAmountArr[1].length > 2){
+				
+				inputElemObj.value = inputElemObj.value.replace(inputElemObj.value.substr((inputElemObj.value.indexOf(".")+3),inputElemObj.value.length),"");
+				
+			}else if(inputElemObj.value.indexOf(".") != inputElemObj.value.lastIndexOf(".")){
+					
+				inputElemObj.value = inputElemObj.value.substr(0,inputElemObj.value.lastIndexOf("."));
+			}
+			
 			this.setState({inputAmount : inputElemObj.value},function(){
 				this.calculateExchangeRate(this.state.inputAmount);
 			});
