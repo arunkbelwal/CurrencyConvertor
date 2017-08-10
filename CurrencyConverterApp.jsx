@@ -37,7 +37,7 @@ class CurrencyConverterApp extends React.Component {
     getSelectionChangeForFromDropdown(event){
 		var sel = event.target;
 		var seloptval = sel.options[sel.selectedIndex].value;
-		//var inputamount = event.target.parentNode.previousSibling.value;
+		
 		var inputamount = this.state.inputAmount;
 		 this.setState({currencyformatfrom : seloptval},function(){
 			
@@ -49,7 +49,7 @@ class CurrencyConverterApp extends React.Component {
 	getSelectionChangeForToDropdown(event){
 		var sel = event.target;
 		var seloptval = sel.options[sel.selectedIndex].value;
-		//var inputamount=event.target.parentNode.parentNode.previousSibling.childNodes[1].value;
+		
 		this.setState({currencyformatto : seloptval},function(){
 			this.calculateExchangeRate(this.state.inputAmount);
 					
@@ -73,11 +73,9 @@ class CurrencyConverterApp extends React.Component {
 	};
    
 	calculateExchangeRate(inputamount){
-	  
 		var  selectedcurrencyfrom = this.state.currencyformatfrom;
 		var  selectedcurrencyto =  this.state.currencyformatto;
 	   if(selectedcurrencyfrom === selectedcurrencyto){
-		  // document.getElementById('convertedamountbox').value =  inputamount;
 			this.setState({convertedamount: inputamount});
 	   }else{
 		   var currencyrate = '';
@@ -105,8 +103,7 @@ class CurrencyConverterApp extends React.Component {
 		   });
 		   
 		   promise.then( result => {
-			  // currencyrate = document.getElementById('conversionrates').value ;
-				// document.getElementById('convertedamountbox').value =  (currencyrate*inputamount);
+			  
 				 this.setState({convertedamount: convertedamounttemp.toFixed(2)});
 			 }, function(error) {
 			         
