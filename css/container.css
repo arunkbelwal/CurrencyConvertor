@@ -1,71 +1,37 @@
+.slds_col_modified, [class*=slds_col_modified_padded], [class*=slds_col_modified--padded] {
+		-ms-flex: 1 1 auto;
+		flex: 1 1 auto;
+		border: 1px solid black;
+		padding: 25px;
+	}
+	
 @media (min-width: 1281px) {
-.app_one{
-	margin-left: 16px;
-    position: absolute;
-  }
-  
-  .app_two{
-    position: absolute;
-    margin-left: 374px;
-  }
-  
-  .app_three{
-	margin-left: 732px;
-    position: absolute;
-  }
 
+.slds_grid_modified{
+	display : flex;
+}
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-.app_one{
-	margin-left: 16px;
-    position: absolute;
-  }
-  
-  .app_two{
-    position: absolute;
-    margin-left: 374px;
-  }
-  
-  .app_three{
-	margin-left: 732px;
-    position: absolute;
-  }
+.slds_grid_modified{
+	display : flex;
+}
 
 }
 
 
 @media (min-width: 768px) and (max-width: 1024px) {
-.app_one{
-	margin-left: 0px;
-	border: 1px solid;
-     }
-  
-  .app_two{
-    margin-left: 0px;
-	border: 1px solid;
-  }
-  
-  .app_three{
-	margin-left: 0px;
-	border: 1px solid;
-  }
+
+.slds_grid_modified{
+	display : block;
+}
 
 }
 
 @media (min-width: 320px) and (max-width: 767px) {
-	.app_one{
-	 margin-left: -2px;
-	 
-     }
-  
-	  .app_two{
-		margin-left: -2px;
-	  }
-	  
-	  .app_three{
-		margin-left: -2px;
-	  }
+	.slds_grid_modified{
+	display : block;
+}
 
 }
 
