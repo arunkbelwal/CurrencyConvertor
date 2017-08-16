@@ -12,6 +12,10 @@
 		font-size: 14px;
 	}
 	
+	.main_heading_text{
+		font-weight: token(fontWeightRegular);	
+	}
+	
 @media (min-width: 1281px) {
 
 .slds_grid_modified{
