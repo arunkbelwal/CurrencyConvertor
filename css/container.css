@@ -1,9 +1,4 @@
-.slds_col_modified, [class*=slds_col_modified_padded], [class*=slds_col_modified--padded] {
-		-ms-flex: 1 1 auto;
-		flex: 1 1 auto;
-		border: 1px solid black;
-		padding: 25px;
-	}
+
 	
 	.error_container{
 		color: red;
@@ -14,18 +9,71 @@
 	
 	.main_heading_text{
 		font-weight: token(fontWeightRegular);	
+		background-color : token(colorBackground);
+	}
+	
+	.slds-col div div span{
+		font-size: 20px;
+		font-weight : bold;
+	}
+	
+	div.slds-col{
+		border:1px solid;
+	}
+	
+	.slds-col div div.slds-text-align--left span{
+	    font-size: 0.6rem;
+	}
+	
+	label{
+		font-size: 12px;
+		font-weight : bold;
+	}
+	
+	.slds-input[disabled] {
+		background-color: #fff;
+		border-color: #a8b7c7;
+		cursor: not-allowed;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	a{
+		text-decoration:underline;
+	}
+	
+	.slds-select{
+		 background-color: lightgray;
 	}
 	
 @media (min-width: 1281px) {
 
-.slds_grid_modified{
-	display : flex;
+.slds-grid{
+	display: -ms-flexbox;
+    display: flex; 
+    -ms-flex-pack: center;
+   justify-content: center; 
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -ms-flex-align: center;
+    align-items: center; 
+    margin: auto; 
 }
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-.slds_grid_modified{
-	display : flex;
+.slds-grid{
+	display: -ms-flexbox;
+    display: flex; 
+    -ms-flex-pack: center;
+   justify-content: center; 
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -ms-flex-align: center;
+    align-items: center; 
+    margin: auto; 
 }
 
 }
@@ -33,14 +81,14 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
 
-.slds_grid_modified{
+.slds-grid{
 	display : block;
 }
 
 }
 
 @media (min-width: 320px) and (max-width: 767px) {
-	.slds_grid_modified{
+	.slds-grid{
 	display : block;
 	
 }

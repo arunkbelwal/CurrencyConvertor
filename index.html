@@ -1,29 +1,23 @@
-<apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0"> 
-
 <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang = "en">
 
    <head>
       <meta charset = "UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
       <title>Currency Converter App</title>
-	  <link rel="stylesheet" type="text/css" href="./css/container.css"></link>
-	 <link rel="stylesheet" type="text/css" href="./css/styles/salesforce-lightning-design-system.scss"/>  
-	
-
+	  
+	 <link rel="stylesheet" type="text/css" href="./css/styles/salesforce-lightning-design-system.css"/>  
+	<link rel="stylesheet" type="text/css" href="./css/container.css"></link>
    </head>
 
    <body>
 	  <div id="error_container" class = "error_container"></div>
-	  <div  class="slds-grid slds-align--absolute-center slds-grid--overflow slds-m-left_x-large slds-m-right--large">
-	    <div id="app" class="slds-col slds-p-left--large slds-p-right--small slds-size_1-of-12  slds-p-bottom--large"></div>
-		<div id="appOne" class="slds-col slds-p-left--large slds-p-right--small slds-size_1-of-12  slds-p-bottom--large"></div>
-		<div id="appTwo" class="slds-col slds-p-left--large slds-p-right--small slds-size_1-of-12  slds-p-bottom--large"></div>
-		
+  
+	  <div  class="slds-grid--overflow ">
+	    <div id="app"></div>
 	  </div>
-	
 	  
       <script src = "index.js"></script>
    </body>
 
 </html>
-</apex:page>
+
