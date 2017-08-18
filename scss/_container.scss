@@ -1,0 +1,76 @@
+@mixin font-size($size) {
+    font-size: $size;
+}
+
+.error_container {
+    color: red;
+    padding: 5px;
+    text-align: center;
+    @include font-size(14px);
+}
+
+.slds-col div div span {
+   	@include font-size(20px);
+    font-weight: $bold-text;
+}
+div.slds-col {
+    border: 1px solid;
+}
+.slds-col div div.slds-text-align--left span {
+    @include font-size(0.6rem);
+}
+label {
+	@include font-size(12px);
+    font-weight: $bold-text;
+}
+.slds-input[disabled] {
+    background-color: $color-white;
+    border-color: #a8b7c7;
+    cursor: not-allowed;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+a {
+    text-decoration: underline;
+}
+.slds-select {
+    background-color: $color-grey;
+}
+@media (min-width: 1281px) {
+    .slds-grid {
+        display: -ms-flexbox;
+        display: $align-flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-line-pack: center;
+        align-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin: auto;
+    }
+}
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .slds-grid {
+        display: -ms-flexbox;
+        display: $align-flex;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-line-pack: center;
+        align-content: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin: auto;
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .slds-grid {
+        display: $align-non-flex;
+    }
+}
+@media (min-width: 320px) and (max-width: 767px) {
+    .slds-grid {
+        display: $align-non-flex;
+    }
+}
