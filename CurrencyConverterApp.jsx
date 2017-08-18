@@ -111,7 +111,7 @@ this.setState({convertedamount: convertedamounttemp.toFixed(2)});
 };
 render() {
 return (
-<div className="slds-col slds-m-right_medium slds-p-left--large slds-p-right--small slds-p-bottom--large">
+<div className="slds-col slds-m-bottom--large slds-m-right_medium slds-p-left--large slds-p-right--small slds-p-bottom--large">
 <div  id ="main-container">
    <div className="main_heading_text slds-m-bottom_small  slds-size--4-of-4">
 	<span className="slds-text-heading--medium">Currency converter</span>
