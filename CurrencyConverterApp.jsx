@@ -15,6 +15,7 @@ constructor(props) {
         inputAmount: 0,
         placeholdervalue: '0.00'
     }
+	/* state variables will be defined below */
     this.updateState = this.updateState.bind(this);
     this.showDisclaimerMessage = this.showDisclaimerMessage.bind(this);
     this.getSelectionChangeForFromDropdown = this.getSelectionChangeForFromDropdown.bind(this);
@@ -23,6 +24,7 @@ constructor(props) {
     this.inputFocusBlurUpdate = this.inputFocusBlurUpdate.bind(this);
 };
 
+/* this method will show/hide disclaimer message */
 showDisclaimerMessage(event) {
     if (event.target.nextSibling.childNodes[0].classList.contains('slds-hide')) {
         this.setState({
@@ -34,6 +36,7 @@ showDisclaimerMessage(event) {
         });
     }
 };
+
 getSelectionChangeForFromDropdown(event) {
     var sel = event.target;
     var seloptval = sel.options[sel.selectedIndex].value;
@@ -44,6 +47,7 @@ getSelectionChangeForFromDropdown(event) {
         this.calculateExchangeRate(this.state.inputAmount);
     });
 };
+
 getSelectionChangeForToDropdown(event) {
     var sel = event.target;
     var seloptval = sel.options[sel.selectedIndex].value;
@@ -65,18 +69,19 @@ inputFocusBlurUpdate(event) {
         });
     }
 };
+
 updateState(event) {
     var inputElemObj = event.target;
     var invalidChars = /[^.0-9]/gi;
-    var validInput = /[(0-9)+]\.[(0-9)][0-9][(\\s)+]/gi;
     if (invalidChars.test(inputElemObj.value)) {
+		/* check to remove special characters */
         inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
     } else {
 
         if (inputElemObj.value.indexOf(".") != inputElemObj.value.lastIndexOf(".")) {
             inputElemObj.value = inputElemObj.value.substr(0, inputElemObj.value.lastIndexOf("."));
         }
-
+		/* check to allow only two digitd after decimal point */
         if (inputElemObj.value.indexOf(".") != -1) {
             var inputAmountArr = inputElemObj.value.split(".");
             var integralPart = inputAmountArr[0];
@@ -107,6 +112,7 @@ calculateExchangeRate(inputamount) {
             this.setState({
                 amountentered: inputamount
             });
+			/* fixer api call to get currency rates */
             var fixerapiurl = 'https://api.fixer.io/latest?base=' + selectedcurrencyfrom;
             axios.get(fixerapiurl)
                 .then(function(response) {
