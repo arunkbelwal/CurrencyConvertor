@@ -9,7 +9,8 @@ Technologies used in this project:
 
 Pre-requisite to run the project:
 
-You should have a latest version of "node js" installed on your system before running this project.To check if node is installed on your system , run "node -v" from the command prompt.This should give you the latest version number of node.If you get any error then install node first.
+1)You should have a latest version of "node js" installed on your system before running this project.To check if node is installed on your system , run "node -v" from the command prompt.This should give you the latest version number of node.If you get any error then install node first.
+2)After installing node js.Add the path(should be like "C:\Program Files\nodejs") where you have installed your node js to the System PATH variable.
 
 Steps to run the project:
 
