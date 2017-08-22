@@ -12,7 +12,7 @@ constructor(props) {
         exchangerates: '',
         showhidedisclaimermsg: 'slds-hide',
         showhidenetworkerrmsg: 'block',
-        inputAmount: 0,
+        inputAmount: 0.00,
         placeholdervalue: '0.00'
     }
 	/* state variables will be defined below */
@@ -22,7 +22,14 @@ constructor(props) {
     this.getSelectionChangeForToDropdown = this.getSelectionChangeForToDropdown.bind(this);
     this.calculateExchangeRate = this.calculateExchangeRate.bind(this);
     this.inputFocusBlurUpdate = this.inputFocusBlurUpdate.bind(this);
+	this.getResponseFromFixerApi = this.getResponseFromFixerApi.bind(this);
+	
 };
+
+/* this method will test if the fixer api service is available or not*/
+componentDidMount() {
+    this.getResponseFromFixerApi();
+}
 
 /* this method will show/hide disclaimer message on disclaimer link click*/
 showDisclaimerMessage(event) {
@@ -41,11 +48,11 @@ showDisclaimerMessage(event) {
 getSelectionChangeForFromDropdown(event) {
     var sel = event.target;
     var seloptval = sel.options[sel.selectedIndex].value;
-    var inputamount = this.state.inputAmount;
+
     this.setState({
         currencyformatfrom: seloptval
     }, function() {
-        this.calculateExchangeRate(this.state.inputAmount);
+        this.calculateExchangeRate();
     });
 };
 
@@ -56,7 +63,7 @@ getSelectionChangeForToDropdown(event) {
     this.setState({
         currencyformatto: seloptval
     }, function() {
-        this.calculateExchangeRate(this.state.inputAmount);
+        this.calculateExchangeRate();
     });
 };
 
@@ -77,68 +84,96 @@ inputFocusBlurUpdate(event) {
 updateState(event) {
     var inputElemObj = event.target;
     var invalidChars = /[^.0-9]/gi;
+    var firstindexofdecimalpoint = inputElemObj.value.indexOf(".");
+    var lastindexofdecimalpoint = inputElemObj.value.lastIndexOf(".");
     if (invalidChars.test(inputElemObj.value)) {
-		/* check to remove special characters */
+        /* check to remove special characters */
         inputElemObj.value = inputElemObj.value.replace(invalidChars, "");
     } else {
 
-        if (inputElemObj.value.indexOf(".") != inputElemObj.value.lastIndexOf(".")) {
-            inputElemObj.value = inputElemObj.value.substr(0, inputElemObj.value.lastIndexOf("."));
-        }
-		/* check to allow only two digitd after decimal point */
+        /* check to allow only two digitd after decimal point */
         if (inputElemObj.value.indexOf(".") != -1) {
+
+            if (firstindexofdecimalpoint != lastindexofdecimalpoint) {
+
+                if (inputElemObj.value.charAt(firstindexofdecimalpoint) === inputElemObj.value.charAt(lastindexofdecimalpoint)) {
+                    var decPart = inputElemObj.value.substr((lastindexofdecimalpoint + 1), inputElemObj.value.length);
+                    inputElemObj.value = inputElemObj.value.substr(0, inputElemObj.value.lastIndexOf(".")) + decPart;
+                } else {
+                    inputElemObj.value = inputElemObj.value.substr(0, inputElemObj.value.lastIndexOf("."));
+                }
+            }
+
             var inputAmountArr = inputElemObj.value.split(".");
             var integralPart = inputAmountArr[0];
-            var decPartUptoTwoPlace = '';
+
             if (inputAmountArr[1].length > 2) {
-                decPartUptoTwoPlace = inputElemObj.value.substr(inputElemObj.value.indexOf("."), 3);
+                var decPartUptoTwoPlace = inputElemObj.value.substr(inputElemObj.value.indexOf("."), 3);
                 inputElemObj.value = integralPart + decPartUptoTwoPlace;
             }
+
         }
         this.setState({
             inputAmount: inputElemObj.value
         }, function() {
-            this.calculateExchangeRate(this.state.inputAmount);
+            this.calculateExchangeRate();
         });
     }
 };
 
 /* this method will make api call to get fixer api response */
-calculateExchangeRate(inputamount) {
+calculateExchangeRate(event) {
+    var inputamount = this.state.inputAmount;
+    if (document.getElementById("error_container").innerText != '') {
+        return false;
+    }
     var selectedcurrencyfrom = this.state.currencyformatfrom;
     var selectedcurrencyto = this.state.currencyformatto;
     if (selectedcurrencyfrom === selectedcurrencyto) {
+        var inputamounttemp = inputamount;
+        if (inputamounttemp === '' || inputamounttemp === undefined) {
+            inputamounttemp = 0;
+        }
         this.setState({
-            convertedamount: inputamount
+            convertedamount: parseFloat(inputamounttemp).toFixed(2)
         });
+
     } else {
-        var currencyrate = '';
-        var convertedamounttemp = '';
-        var promise = new Promise((resolve, reject) => {
-            this.setState({
-                amountentered: inputamount
-            });
-			/* fixer api call to get currency rates */
-            var fixerapiurl = 'https://api.fixer.io/latest?base=' + selectedcurrencyfrom;
-            axios.get(fixerapiurl)
-                .then(function(response) {
-                    if (response != null) {
-                        resolve(currencyrate = response.data.rates[selectedcurrencyto]);
-                        resolve(convertedamounttemp = (currencyrate * inputamount));
-                        document.getElementById("error_container").innerText = "";
-                    } else {
-                        reject(Error("Promise rejected"));
-                    }
-                }).catch(error => {
-                    document.getElementById("error_container").innerText = error.message + "!!";
-                });
-        });
-        promise.then(result => {
-            this.setState({
-                convertedamount: convertedamounttemp.toFixed(2)
-            });
-        }, function(error) {});
+        this.getResponseFromFixerApi();
     }
+};
+
+getResponseFromFixerApi(event) {
+    var currencyrate = '';
+    var convertedamounttemp = '';
+    var inputamount = this.state.inputAmount;
+    var currencyFormatFrom = this.state.currencyformatfrom;
+    var currencyFormatTo = this.state.currencyformatto;
+    var promise = new Promise((resolve, reject) => {
+        this.setState({
+            amountentered: inputamount
+        });
+
+        /* fixer api call to get currency rates */
+        var fixerapiurl = 'https://api.fixer.io/latest?base=' + currencyFormatFrom;
+        axios.get(fixerapiurl)
+            .then(function(response) {
+                if (response != null) {
+                    resolve(currencyrate = response.data.rates[currencyFormatTo]);
+                    resolve(convertedamounttemp = (currencyrate * inputamount));
+                    document.getElementById("error_container").innerText = "";
+                } else {
+                    reject(Error("Promise rejected"));
+                }
+            }).catch(error => {
+                document.getElementById("error_container").innerText = error.message + "!!";
+            });
+    });
+    promise.then(result => {
+        this.setState({
+            convertedamount: convertedamounttemp.toFixed(2)
+        });
+    }, function(error) {});
 };
 
 render() {

@@ -1,4 +1,4 @@
-Description: The project is an Currency Converter Application with the help of which the user can check the value of one currency against other currencies. Mainly this project is using Fixer API to get various currency rates.
+Description: The project is an Currency Converter Application with the help of which the user can check the current values of three currencies(i.e "CAD","USD","EUR") against each other.Internally this project is using Fixer API to get this three currency rates.
 
 Technologies used in this project:
 
@@ -7,6 +7,9 @@ Technologies used in this project:
 3) Saleforce Lightening Design System
 4) Java Script
 
+Pre-requisite to run the project:
+
+You should have a latest version of "node js" installed on your system before running this project.To check if node is installed on your system , run "node -v" from the command prompt.This should give you the latest version number of node.If you get any error then install node first.
 
 Steps to run the project:
 
